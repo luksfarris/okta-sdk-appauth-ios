@@ -34,6 +34,25 @@ public func login() -> Login {
     return Login()
 }
 
+public func isAuthenticated() -> Bool {
+    // Returns if there is an active user session
+    let accessToken = OktaKeychain.get(key: "accessToken")
+    let idToken = OktaKeychain.get(key: "idToken")
+    if accessToken == nil && idToken == nil { return false }
+
+    // Restore state
+    guard let encodedAuthState = OktaKeychain
+        .getData(key: "appAuthState") else { return false }
+    guard let previousState = NSKeyedUnarchiver
+        .unarchiveObject(with: encodedAuthState) as? OIDAuthState else { return false }
+
+    tokens = OktaTokenManager(authState: previousState)
+
+    // Renew the config
+    configuration = Utils.getPlistConfiguration()
+    return true
+}
+
 public func introspect() -> Introspect {
     // Check the validity of the tokens
     return Introspect()
@@ -52,7 +71,6 @@ public func userinfo(_ callback: @escaping ([String:Any]?, OktaError?) -> Void) 
 public func refresh() {
     // Get new tokens
     tokens?.authState?.setNeedsTokenRefresh()
-    
     tokens?.authState?.performAction(freshTokens: { accessToken, idToken, error in
         if error != nil {
             print("Error fetching fresh tokens: \(error!.localizedDescription)")

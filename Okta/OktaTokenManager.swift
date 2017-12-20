@@ -29,6 +29,18 @@ open class OktaTokenManager: NSObject {
         self.refreshToken = authState?.lastTokenResponse?.refreshToken
 
         OktaAuth.tokens = self
+
+        // Encode and store the current auth state
+        let authStateData = NSKeyedArchiver.archivedData(withRootObject: authState!)
+        self.setData(value: authStateData, forKey: "appAuthState")
+    }
+
+    public func setData(value: Data, forKey: String) {
+        self.setData(value: value, forKey: forKey, needsBackgroundAccess: false)
+    }
+
+    public func setData(value: Data, forKey: String, needsBackgroundAccess: Bool) {
+        OktaKeychain.set(key: forKey, objectData: value, access: needsBackgroundAccess)
     }
 
     public func set(value: String, forKey: String) {

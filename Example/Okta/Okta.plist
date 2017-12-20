@@ -10,11 +10,9 @@
 	</array>
 	<key>redirectUri</key>
 	<string>com.okta.example:/callback</string>
-	<key>clientSecret</key>
-	<string></string>
 	<key>clientId</key>
-	<string>{client_id}</string>
+	<string>{clientId}</string>
 	<key>issuer</key>
-	<string>https://{yourOktaDomain}.com/oauth2/default</string>
+	<string>https://example.oktapreview.com/oauth2/default</string>
 </dict>
 </plist>

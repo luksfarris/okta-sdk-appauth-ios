@@ -13,10 +13,15 @@ class ViewController: UIViewController {
 
     @IBOutlet weak var tokenView: UITextView!
 
-    override func viewDidLoad() { super.viewDidLoad() }
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        if OktaAuth.isAuthenticated() {
+            self.buildTokenTextView()
+        }
+    }
 
     @IBAction func loginButton(_ sender: Any) {
-        if tokens == nil { self.loginCodeFlow() }
+        self.loginCodeFlow()
     }
 
     @IBAction func refreshTokens(_ sender: Any) {
@@ -89,7 +94,6 @@ class ViewController: UIViewController {
         }
 
         var tokenString = ""
-
         if let accessToken = tokens?.accessToken {
             tokenString += ("\nAccess Token: \(accessToken)\n")
         }
