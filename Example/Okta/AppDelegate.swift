@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import OktaAuth
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {

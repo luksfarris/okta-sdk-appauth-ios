@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import OktaAuth
 
 class ViewController: UIViewController {
 
@@ -16,7 +15,7 @@ class ViewController: UIViewController {
     override func viewDidLoad() { super.viewDidLoad() }
 
     @IBAction func loginButton(_ sender: Any) {
-        if tokens == nil { self.loginCodeFlow() }
+        if OktaAuth.tokens == nil { self.loginCodeFlow() }
     }
 
     @IBAction func refreshTokens(_ sender: Any) {
@@ -42,7 +41,7 @@ class ViewController: UIViewController {
 
     @IBAction func introspectButton(_ sender: Any) {
         // Get current accessToken
-        let accessToken = tokens?.accessToken
+        let accessToken = OktaAuth.tokens?.accessToken
         if accessToken == nil { return }
 
         OktaAuth
@@ -55,7 +54,7 @@ class ViewController: UIViewController {
 
     @IBAction func revokeButton(_ sender: Any) {
         // Get current accessToken
-        let accessToken = tokens?.accessToken
+        let accessToken = OktaAuth.tokens?.accessToken
         if accessToken == nil { return }
 
         OktaAuth.revoke(accessToken!) { response, error in
@@ -71,8 +70,8 @@ class ViewController: UIViewController {
                 if error != nil { print(error!) }
                 if let authResponse = response {
                     // Store tokens in keychain
-                    tokens?.set(value: authResponse.accessToken!, forKey: "accessToken")
-                    tokens?.set(value: authResponse.idToken!, forKey: "idToken")
+                    OktaAuth.tokens?.set(value: authResponse.accessToken!, forKey: "accessToken")
+                    OktaAuth.tokens?.set(value: authResponse.idToken!, forKey: "idToken")
                     self.buildTokenTextView()
                 }
         }
@@ -83,22 +82,22 @@ class ViewController: UIViewController {
     }
 
     func buildTokenTextView() {
-        if tokens == nil {
+        if OktaAuth.tokens == nil {
             tokenView.text = ""
             return
         }
 
         var tokenString = ""
 
-        if let accessToken = tokens?.accessToken {
+        if let accessToken = OktaAuth.tokens?.accessToken {
             tokenString += ("\nAccess Token: \(accessToken)\n")
         }
 
-        if let idToken = tokens?.idToken {
+        if let idToken = OktaAuth.tokens?.idToken {
             tokenString += "\nidToken Token: \(idToken)\n"
         }
 
-        if let refreshToken = tokens?.refreshToken {
+        if let refreshToken = OktaAuth.tokens?.refreshToken {
             tokenString += "\nrefresh Token: \(refreshToken)\n"
         }
 
