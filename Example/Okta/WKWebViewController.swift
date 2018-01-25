@@ -9,7 +9,7 @@
 import UIKit
 import WebKit
 
-open class WKWebViewController : UIViewController, WKUIDelegate {
+@objc open class WKWebViewController : UIViewController, WKUIDelegate {
     
     @IBOutlet weak var webView: WKWebView!
     @objc open var url:URL?
@@ -25,7 +25,7 @@ open class WKWebViewController : UIViewController, WKUIDelegate {
         open()
     }
     
-    open func open() {
+    private func open() {
         if let requestUrl = url {
             let request = URLRequest.init(url: requestUrl)
             webView.load(request)

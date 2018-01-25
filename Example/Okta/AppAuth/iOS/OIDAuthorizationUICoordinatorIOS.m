@@ -24,6 +24,7 @@
 #import "OIDAuthorizationRequest.h"
 #import "OIDAuthorizationService.h"
 #import "OIDErrorUtilities.h"
+#import "Okta_Example-Swift.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -90,9 +91,9 @@ static id<OIDSafariViewControllerFactory> __nullable gSafariViewControllerFactor
   BOOL openedSafari = NO;
   NSURL *requestURL = [request authorizationRequestURL];
 
-    // TODO: open web view view controller
+  WKWebViewController *controller = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"WKWebViewController"];
     
-    
+    controller.url = requestURL;
 
     
   return openedSafari;
